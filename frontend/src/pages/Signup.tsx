@@ -1,4 +1,4 @@
-import React from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,20 +25,15 @@ export default function Signup() {
     resolver: zodResolver(signupSchema)
   });
 
-  const [isSigningUp, setIsSigningUp] = React.useState(false);
-
   const onSubmit = async (data: SignupForm) => {
     try {
       setError('');
-      setIsSigningUp(true);
       const response = await api.post('/auth/signup', data);
       // Auto-login after signup
       login(response.data.data.accessToken, response.data.data.user);
       navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.error?.message || 'Signup failed. Please try again.');
-    } finally {
-      setIsSigningUp(false);
     }
   };
 

@@ -4,18 +4,18 @@ import {
   LayoutDashboard, 
   Briefcase, 
   ListTodo, 
-  Settings, 
-  ChevronLeft,
-  ChevronRight,
-  LogOut,
-  ShieldCheck
+  ShieldCheck, 
+  LogOut, 
+  ChevronLeft, 
+  ChevronRight 
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { cn } from '../../lib/utils';
+import { Button } from '../ui/Button';
 
 interface SidebarProps {
   collapsed: boolean;
-  setCollapsed: (v: boolean) => void;
+  setCollapsed: (collapsed: boolean) => void;
 }
 
 export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
@@ -33,78 +33,45 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
   return (
     <aside 
       className={cn(
-        "relative h-screen bg-zinc-950 border-r border-white/5 transition-all duration-500 ease-in-out flex flex-col z-40",
-        collapsed ? "w-[80px]" : "w-[260px]"
+        "fixed left-0 top-0 h-screen bg-zinc-950 border-r border-white/5 z-40 transition-all duration-500 ease-in-out flex flex-col",
+        collapsed ? "w-24" : "w-80"
       )}
     >
-      {/* Editorial Logo */}
-      <div className="h-24 flex items-center px-6 overflow-hidden">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shrink-0">
-            <span className="font-display font-black text-black text-xl">T.</span>
-          </div>
-          {!collapsed && (
-            <span className="font-display font-bold text-xl tracking-tighter transition-all duration-300">
-              TEAM<span className="text-primary">TASK</span>
-            </span>
-          )}
+      {/* Editorial Branding */}
+      <div className="p-8 pb-12 flex items-center justify-between">
+        <div className={cn("flex items-center gap-3 transition-opacity duration-300", collapsed && "opacity-0 invisible")}>
+           <div className="h-8 w-8 bg-primary rounded-xl flex items-center justify-center">
+              <span className="font-display font-black text-black text-lg">T.</span>
+           </div>
+           <span className="font-display font-black text-2xl tracking-tighter uppercase">Sync.</span>
         </div>
+        <button 
+          onClick={() => setCollapsed(!collapsed)}
+          className="h-8 w-8 rounded-full border border-white/5 flex items-center justify-center hover:bg-white/5 transition-colors text-muted-foreground"
+        >
+          {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+        </button>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 space-y-2 mt-4">
+      <nav className="flex-1 px-4 space-y-2">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) => cn(
-              "sidebar-link",
-              isActive && "active",
-              collapsed && "justify-center px-0"
+              "flex items-center gap-4 px-4 py-4 rounded-2xl transition-all group relative overflow-hidden",
+              isActive 
+                ? "bg-primary text-black font-black" 
+                : "text-muted-foreground hover:text-foreground hover:bg-white/5"
             )}
           >
-            <item.icon className="h-5 w-5 shrink-0" />
-            {!collapsed && <span className="truncate">{item.label}</span>}
+            <item.icon size={22} className={cn("shrink-0", !collapsed && "transition-transform group-hover:scale-110")} />
+            {!collapsed && <span className="text-sm tracking-tight">{item.label}</span>}
           </NavLink>
         ))}
       </nav>
 
-      {/* Bottom Actions */}
-      <div className="p-4 border-t border-white/5 space-y-2">
-        <button 
-          onClick={() => logout.mutate()}
-          className={cn(
-            "sidebar-link w-full text-red-400/70 hover:text-red-400 hover:bg-red-500/5",
-            collapsed && "justify-center px-0"
-          )}
-        >
-          <LogOut className="h-5 w-5 shrink-0" />
-          {!collapsed && <span>Logout</span>}
-        </button>
-
-        <button 
-          onClick={() => setCollapsed(!collapsed)}
-          className="w-full h-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-        >
-          {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-        </button>
-      </div>
-
-      {/* User Avatar Section (Handcrafted touch) */}
-      {!collapsed && (
-        <div className="p-6 bg-zinc-900/30">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center overflow-hidden">
-              {user?.avatar_url ? (
-                <img src={user.avatar_url} alt={user.name} className="h-full w-full object-cover" />
-              ) : (
-                <span className="font-display font-bold text-xs">{user?.name?.charAt(0)}</span>
-              )}
-            </div>
-            <div className="flex-1 overflow-hidden">
-              <p className="text-sm font-bold truncate">{user?.name}</p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-black">
-                {user?.email === 'admin@team.com' ? 'Administrator' : 'Team Member'}
               </p>
             </div>
           </div>

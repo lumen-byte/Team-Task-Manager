@@ -1,10 +1,11 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/ui/Button';
+import { api } from '../lib/axios';
+import React from 'react';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),

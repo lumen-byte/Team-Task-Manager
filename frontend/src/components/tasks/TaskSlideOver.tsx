@@ -1,4 +1,3 @@
-import React from 'react';
 import { X, Calendar, Flag, User, Trash2, CheckCircle } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { format } from 'date-fns';

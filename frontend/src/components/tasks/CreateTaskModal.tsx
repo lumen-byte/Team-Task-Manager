@@ -1,4 +1,3 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -6,7 +5,6 @@ import { X } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useCreateTask } from '../../hooks/useTasks';
 import { useProjects } from '../../hooks/useProjects';
-import { cn } from '../../lib/utils';
 
 const taskSchema = z.object({
   title: z.string().min(3, 'Title is too short'),
