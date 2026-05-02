@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 import { env } from './config/env';
 import { errorHandler, notFoundHandler } from './middlewares/error.middleware';
 import { apiLimiter } from './middlewares/rateLimiter';
@@ -31,6 +32,18 @@ app.use('/api', apiLimiter);
 
 // Routes
 app.use('/api/v1', routes);
+
+// Serve Frontend in Production
+if (env.NODE_ENV === 'production') {
+  const frontendPath = path.resolve(__dirname, '../../frontend/dist');
+  app.use(express.static(frontendPath));
+  
+  app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+      res.sendFile(path.join(frontendPath, 'index.html'));
+    }
+  });
+}
 
 // Error Handling
 app.use(notFoundHandler);
