@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -72,11 +71,35 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
         ))}
       </nav>
 
-              </p>
-            </div>
+      {/* User & Actions */}
+      <div className="p-4 mt-auto border-t border-white/5 bg-zinc-900/10">
+        {!collapsed && (
+          <div className="mb-6 px-4 pt-4">
+             <div className="flex items-center gap-4">
+                <div className="h-10 w-10 rounded-2xl bg-zinc-800 border border-white/5 flex items-center justify-center font-black text-sm">
+                  {user?.name?.[0].toUpperCase()}
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="text-sm font-bold truncate">{user?.name}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-black">
+                    {user?.email === 'admin@team.com' ? 'Administrator' : 'Team Member'}
+                  </p>
+                </div>
+             </div>
           </div>
+        )}
+        
+        <div className="space-y-2">
+          <Button 
+            variant="ghost" 
+            className={cn("w-full h-12 flex items-center justify-start gap-4 px-4 hover:bg-red-500/10 hover:text-red-500", collapsed && "justify-center px-0")}
+            onClick={() => logout()}
+          >
+            <LogOut size={18} className="shrink-0" />
+            {!collapsed && <span className="text-xs font-black uppercase tracking-widest">Sign Out</span>}
+          </Button>
         </div>
-      )}
+      </div>
     </aside>
   );
 }
