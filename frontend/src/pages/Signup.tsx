@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,7 +19,7 @@ type SignupForm = z.infer<typeof signupSchema>;
 export default function Signup() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [error, setError] = React.useState('');
+  const [error, setError] = useState('');
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignupForm>({
     resolver: zodResolver(signupSchema)
